@@ -1,6 +1,5 @@
 document.querySelector("#audio").play();
 const audioImageTapped = () =>{
-    console.log("image tapped eneted");
     if(document.querySelector("#audioImage").classList.contains("paused")){
         document.querySelector("#audioImage").classList.remove("paused");
         document.querySelector("#audio").play();
