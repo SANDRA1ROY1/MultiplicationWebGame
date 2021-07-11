@@ -52,11 +52,10 @@ document.onreadystatechange = function () {
             let num = Math.floor((Math.random() * val) + 1);
             return num;
         }
-
-        
+       
         addPlayer = (enemyID) => {
             let Player = '<div class=floatRight id=Player>' +
-                            '<img class="padBottom" src="assets/player.png" height="' + imgHgt + '" width="' + imgWdt + '" />' +
+                            '<img class="padBottom" src="assets/player.png" height="166px" width="120px" />' +
                             '<div id="CorrectAns" class="text">' + arrCorrectAns[ansID] + '</div>' +
                         '</div>';
             document.getElementById(arrEnemiesID[enemyID]).innerHTML += Player;
@@ -96,6 +95,7 @@ document.onreadystatechange = function () {
                     
                     if (enemy.offsetLeft >= limit) {
                         clearInterval(EnemyTimer);
+                        clearInterval(RemainingTime);
                         alert('ENEMY WINS!')
                     }
                 }
