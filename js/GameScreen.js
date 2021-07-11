@@ -1,5 +1,6 @@
-document.onreadystatechange = function () {
+document.onreadystatechange = () => {
     if (document.readyState == "complete") {
+
         let nTotalEnemies = 5;
         let imgHgt = '120px';
         let imgWdt = '120px';
@@ -13,6 +14,21 @@ document.onreadystatechange = function () {
         let ansID = '';
         let EnemyTimer;
         let RemainingTime;
+        let nLimit = window.innerWidth - 256;
+        let nScore = 0;
+        let PlayerName = '';
+
+        getPlayerName = () => {
+            let url = new URL(window.location.href);
+            PlayerName = url.searchParams.get("Name");
+            
+            // Clearing Query String after fetching Name from URL...
+            var uri = window.location.toString();
+            if (uri.indexOf("?") > 0) {
+                var clean_uri = uri.substring(0, uri.indexOf("?"));
+                window.history.replaceState({}, document.title, clean_uri);
+            }
+        }
 
         generateEnemies = () => {
             let enemy = '';
@@ -31,14 +47,6 @@ document.onreadystatechange = function () {
                     '</div>';
             
             document.getElementById('Ememies').innerHTML = enemy;
-            
-            RemainingTime = setInterval(function(){
-                if(timeleft == 1){
-                    clearInterval(RemainingTime);
-                }
-                document.getElementById("time").innerHTML = "Time remaining: " + (timeleft - 1);
-                timeleft -= 1;
-            }, 1000);
         }
 
         equation = () => {
@@ -61,7 +69,7 @@ document.onreadystatechange = function () {
             document.getElementById(arrEnemiesID[enemyID]).innerHTML += Player;
         }
 
-        function getRandom(arr, n) {
+        getRandom = (arr, n) => {
             var result = new Array(n),
                 len = arr.length,
                 taken = new Array(len);
@@ -76,15 +84,13 @@ document.onreadystatechange = function () {
         }
 
         initiateCharge = () => {
-            EnemyTimer = setInterval(enemyCharge, 100);
-            let limit = window.innerWidth - 256;
             let speed = [];
             
             for (let c = 0; c < arrChargeSpeed.length; c++) {
                 speed = getRandom(arrChargeSpeed, arrChargeSpeed.length);
             }
 
-            function enemyCharge() {
+            EnemyTimer = setInterval(function() {
                 for (let i = 0; i < arrEnemiesID.length; i++) {
                     let enemy = document.getElementById(arrEnemiesID[i]);
                     if (enemy.style.marginLeft == "") {
@@ -93,20 +99,16 @@ document.onreadystatechange = function () {
                         enemy.style.marginLeft = (parseInt(enemy.style.marginLeft) + speed[i]) + "px";
                     }
                     
-                    if (enemy.offsetLeft >= limit) {
+                    if (enemy.offsetLeft >= nLimit) {
+                        document.onkeyup = null;
                         clearInterval(EnemyTimer);
                         clearInterval(RemainingTime);
-                        alert('ENEMY WINS!')
+                        console.log('ENEMY WINS!');
+                        saveData();
                     }
                 }
-            }
+            }, 100);
         }
-
-        generateEnemies();
-        enemyID = Math.floor(Math.random() * arrEnemiesID.length);
-        ansID = Math.floor(Math.random() * arrCorrectAns.length);
-        addPlayer(enemyID, ansID);
-        initiateCharge();
 
         document.onkeyup = (e) => {
             if (e.key === 'ArrowUp') {
@@ -121,18 +123,63 @@ document.onreadystatechange = function () {
                     enemyID++;
                     addPlayer(enemyID, ansID);
                 }
-            } else if (e.key === ' ') {
+            } else if (e.key === ' ' && nCurrentLevel <= nTotalLevels) {
                 let index = document.getElementById('Player').parentNode.id.split('enemy_')[1];
                 let PlayerAns = document.getElementById('CorrectAns').innerText;
                 
                 if (parseInt(PlayerAns) === parseInt(arrCorrectAns[index])) {
-                    alert('CORRECT');
+                    nScore++;
                 } else {
-                    alert('INCORRECT');
+                    console.log('INCORRECT');
                 }
+
+                if (nCurrentLevel != nTotalLevels) {
+                    nCurrentLevel++;
+                } else {
+                    document.onkeyup = null;
+                    clearInterval(EnemyTimer);
+                    clearInterval(RemainingTime);
+                    console.log('YOUR SCORE - ' + nScore);
+                    if (nScore == nTotalLevels) {
+                        console.log('YOU WIN!');
+                    } else {
+                        console.log('YOU LOOSE!');
+                    }
+                    saveData();
+                    return;
+                }
+
+                arrCorrectAns = [];
+                arrEnemiesID = [];
                 clearInterval(EnemyTimer);
-                clearInterval(RemainingTime);
+
+                generateEnemies();
+                enemyID = Math.floor(Math.random() * arrEnemiesID.length);
+                ansID = Math.floor(Math.random() * arrCorrectAns.length);
+                addPlayer(enemyID, ansID);
+                initiateCharge();
+            } else {
+                console.log('ALL DONE!')
             }
         }
+
+        saveData = () => {
+            var objPlayer = { 'Name': PlayerName, 'Level': nCurrentLevel, 'Score': nScore };
+            localStorage.setItem('Multiplication Scoot - ' + PlayerName, JSON.stringify(objPlayer));
+        }
+        getPlayerName();
+        generateEnemies();
+        enemyID = Math.floor(Math.random() * arrEnemiesID.length);
+        ansID = Math.floor(Math.random() * arrCorrectAns.length);
+        addPlayer(enemyID, ansID);
+        initiateCharge();
+
+        RemainingTime = setInterval(function(){
+            if(timeleft == 1){
+                clearInterval(RemainingTime);
+            }
+            document.getElementById("time").innerHTML = "Time remaining: " + (timeleft - 1);
+            timeleft -= 1;
+        }, 1000);
     }
 }
