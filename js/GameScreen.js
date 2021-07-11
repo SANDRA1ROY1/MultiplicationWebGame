@@ -10,7 +10,9 @@ document.onreadystatechange = function () {
         let arrEnemiesID = [];
         let arrChargeSpeed = [6, 7, 8, 9, 10];
         let enemyID = '';
-        let Timer;
+        let ansID = '';
+        let EnemyTimer;
+        let RemainingTime;
 
         generateEnemies = () => {
             let enemy = '';
@@ -30,9 +32,9 @@ document.onreadystatechange = function () {
             
             document.getElementById('Ememies').innerHTML = enemy;
             
-            let Timer = setInterval(function(){
+            RemainingTime = setInterval(function(){
                 if(timeleft == 1){
-                    clearInterval(Timer);
+                    clearInterval(RemainingTime);
                 }
                 document.getElementById("time").innerHTML = "Time remaining: " + (timeleft - 1);
                 timeleft -= 1;
@@ -53,8 +55,6 @@ document.onreadystatechange = function () {
 
         
         addPlayer = (enemyID) => {
-            // TO BE CHANGED, WHEN USER MOVES UP AND DOWN...
-            let ansID = Math.floor(Math.random() * arrCorrectAns.length);
             let Player = '<div class=floatRight id=Player>' +
                             '<img class="padBottom" src="assets/player.png" height="' + imgHgt + '" width="' + imgWdt + '" />' +
                             '<div id="CorrectAns" class="text">' + arrCorrectAns[ansID] + '</div>' +
@@ -77,7 +77,7 @@ document.onreadystatechange = function () {
         }
 
         initiateCharge = () => {
-            Timer = setInterval(enemyCharge, 100);
+            EnemyTimer = setInterval(enemyCharge, 100);
             let limit = window.innerWidth - 256;
             let speed = [];
             
@@ -95,8 +95,8 @@ document.onreadystatechange = function () {
                     }
                     
                     if (enemy.offsetLeft >= limit) {
-                        clearInterval(Timer);
-                        console.log('ENEMY WINS!')
+                        clearInterval(EnemyTimer);
+                        alert('ENEMY WINS!')
                     }
                 }
             }
@@ -104,7 +104,8 @@ document.onreadystatechange = function () {
 
         generateEnemies();
         enemyID = Math.floor(Math.random() * arrEnemiesID.length);
-        addPlayer(enemyID);
+        ansID = Math.floor(Math.random() * arrCorrectAns.length);
+        addPlayer(enemyID, ansID);
         initiateCharge();
 
         document.onkeyup = (e) => {
@@ -112,24 +113,25 @@ document.onreadystatechange = function () {
                 if (enemyID > 0) {
                     document.getElementById('Player').remove();
                     enemyID--;
-                    addPlayer(enemyID);
+                    addPlayer(enemyID, ansID);
                 }
             } else if (e.key === 'ArrowDown') {
                 if (enemyID < 4) {
                     document.getElementById('Player').remove();
                     enemyID++;
-                    addPlayer(enemyID);
+                    addPlayer(enemyID, ansID);
                 }
             } else if (e.key === ' ') {
                 let index = document.getElementById('Player').parentNode.id.split('enemy_')[1];
                 let PlayerAns = document.getElementById('CorrectAns').innerText;
                 
                 if (parseInt(PlayerAns) === parseInt(arrCorrectAns[index])) {
-                    console.log('CORRECT');
+                    alert('CORRECT');
                 } else {
-                    console.log('INCORRECT');
+                    alert('INCORRECT');
                 }
-                clearInterval(Timer);
+                clearInterval(EnemyTimer);
+                clearInterval(RemainingTime);
             }
         }
     }
