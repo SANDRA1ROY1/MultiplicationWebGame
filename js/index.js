@@ -2,6 +2,9 @@
 document.onreadystatechange = () => {
     document.querySelector("#audio").play();
     if (document.readyState == 'complete') {
+
+
+        
        
         const audioImageTapped = () =>{
             if(document.querySelector("#audioImage").classList.contains("paused")){
