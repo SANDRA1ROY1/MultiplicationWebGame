@@ -46,7 +46,7 @@ document.onreadystatechange = () => {
                 enemy += '<div id=enemy_' + i + ' class="row content">' +
                             '<div class="floatLeft">' +
                                 '<img class="padBottom" src="assets/enemy.png" height="' + imgHgt + '" width="' + imgWdt + '" />' +
-                                '<div class="text">' + equation() + '</div>' +
+                                '<div id=equation_' + i + ' class="text">' + equation() + '</div>' +
                             '</div>' +
                         '</div>';
                 arrEnemiesID.push('enemy_' + i);
@@ -141,37 +141,42 @@ document.onreadystatechange = () => {
                     
                     if (parseInt(PlayerAns) === parseInt(arrCorrectAns[index])) {
                         nScore++;
+                        if (nCurrentLevel != nTotalLevels) {
+                            nCurrentLevel++;
+                        } else {
+                            document.onkeyup = null;
+                            clearInterval(EnemyTimer);
+                            clearInterval(RemainingTime);
+                            console.log('YOUR SCORE - ' + nScore);
+                            if (nScore == nTotalLevels) {
+                                console.log('YOU WIN!');
+                                showPrompt('YOU WIN!');
+                            } else {
+                                showPrompt('YOU LOOSE!');
+                                console.log('YOU LOOSE!');
+                            }
+                            saveData();
+                            return;
+                        }
+        
+                        arrCorrectAns = [];
+                        arrEnemiesID = [];
+                        clearInterval(EnemyTimer);
+        
+                        generateEnemies();
+                        enemyID = Math.floor(Math.random() * arrEnemiesID.length);
+                        ansID = Math.floor(Math.random() * arrCorrectAns.length);
+                        addPlayer(enemyID, ansID);
+                        initiateCharge();
                     } else {
                         console.log('INCORRECT');
-                    }
-
-                    if (nCurrentLevel != nTotalLevels) {
-                        nCurrentLevel++;
-                    } else {
-                        document.onkeyup = null;
-                        clearInterval(EnemyTimer);
-                        clearInterval(RemainingTime);
-                        console.log('YOUR SCORE - ' + nScore);
-                        if (nScore == nTotalLevels) {
-                            console.log('YOU WIN!');
-                            showPrompt('YOU WIN!');
-                        } else {
-                            showPrompt('YOU LOOSE!');
-                            console.log('YOU LOOSE!');
+                        arrCorrectAns = [];
+                        for (let i = 0; i < nTotalEnemies; i++) {
+                            document.getElementById('equation_' + i).innerText = equation();
                         }
-                        saveData();
-                        return;
+                        ansID = Math.floor(Math.random() * arrCorrectAns.length);
+                        document.getElementById('CorrectAns').innerHTML = arrCorrectAns[ansID];
                     }
-    
-                    arrCorrectAns = [];
-                    arrEnemiesID = [];
-                    clearInterval(EnemyTimer);
-    
-                    generateEnemies();
-                    enemyID = Math.floor(Math.random() * arrEnemiesID.length);
-                    ansID = Math.floor(Math.random() * arrCorrectAns.length);
-                    addPlayer(enemyID, ansID);
-                    initiateCharge();
                 } else {
                     console.log('ALL DONE!');
                 }
