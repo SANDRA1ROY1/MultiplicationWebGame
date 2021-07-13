@@ -205,7 +205,6 @@ document.onreadystatechange = () => {
             enemyID = '';
             ansID = '';
             nScore = 0;
-            PlayerName = '';
             clearInterval(EnemyTimer);
             clearInterval(RemainingTime);
         }
@@ -213,7 +212,6 @@ document.onreadystatechange = () => {
         fnPlayAgain = () => {
             hidePrompt();
             fnResetVals();
-            getPlayerName();
             generateEnemies();
             enemyID = Math.floor(Math.random() * arrEnemiesID.length);
             ansID = Math.floor(Math.random() * arrCorrectAns.length);
@@ -235,5 +233,6 @@ document.onreadystatechange = () => {
         }
         
         fnPlayAgain();
+        getPlayerName();
     }
 }
