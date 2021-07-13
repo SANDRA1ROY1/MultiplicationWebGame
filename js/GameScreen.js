@@ -12,20 +12,30 @@ document.onreadystatechange = () => {
         let arrChargeSpeed = [6, 7, 8, 9, 10];
         let enemyID = '';
         let ansID = '';
-        let EnemyTimer;
-        let RemainingTime;
+        let EnemyTimer = null;
+        let RemainingTime = null;
         let nLimit = window.innerWidth - 256;
         let nScore = 0;
         let PlayerName = '';
+
+        showPrompt = (txt) => {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("text").innerText = txt;
+        }
+
+        hidePrompt = () => {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("text").innerText = '';
+        }
 
         getPlayerName = () => {
             let url = new URL(window.location.href);
             PlayerName = url.searchParams.get("Name");
             
             // Clearing Query String after fetching Name from URL...
-            var uri = window.location.toString();
+            let uri = window.location.toString();
             if (uri.indexOf("?") > 0) {
-                var clean_uri = uri.substring(0, uri.indexOf("?"));
+                let clean_uri = uri.substring(0, uri.indexOf("?"));
                 window.history.replaceState({}, document.title, clean_uri);
             }
         }
@@ -61,7 +71,7 @@ document.onreadystatechange = () => {
             return num;
         }
        
-        addPlayer = (enemyID) => {
+        addPlayer = (enemyID, ansID) => {
             let Player = '<div class=floatRight id=Player>' +
                             '<img class="padBottom" src="assets/player.png" height="166px" width="120px" />' +
                             '<div id="CorrectAns" class="text">' + arrCorrectAns[ansID] + '</div>' +
@@ -70,7 +80,7 @@ document.onreadystatechange = () => {
         }
 
         getRandom = (arr, n) => {
-            var result = new Array(n),
+            let result = new Array(n),
                 len = arr.length,
                 taken = new Array(len);
             if (n > len)
@@ -104,82 +114,121 @@ document.onreadystatechange = () => {
                         clearInterval(EnemyTimer);
                         clearInterval(RemainingTime);
                         console.log('ENEMY WINS!');
+                        showPrompt('ENEMY WINS!');
                         saveData();
                     }
                 }
             }, 100);
         }
 
-        document.onkeyup = (e) => {
-            if (e.key === 'ArrowUp') {
-                if (enemyID > 0) {
-                    document.getElementById('Player').remove();
-                    enemyID--;
-                    addPlayer(enemyID, ansID);
-                }
-            } else if (e.key === 'ArrowDown') {
-                if (enemyID < 4) {
-                    document.getElementById('Player').remove();
-                    enemyID++;
-                    addPlayer(enemyID, ansID);
-                }
-            } else if (e.key === ' ' && nCurrentLevel <= nTotalLevels) {
-                let index = document.getElementById('Player').parentNode.id.split('enemy_')[1];
-                let PlayerAns = document.getElementById('CorrectAns').innerText;
-                
-                if (parseInt(PlayerAns) === parseInt(arrCorrectAns[index])) {
-                    nScore++;
-                } else {
-                    console.log('INCORRECT');
-                }
-
-                if (nCurrentLevel != nTotalLevels) {
-                    nCurrentLevel++;
-                } else {
-                    document.onkeyup = null;
-                    clearInterval(EnemyTimer);
-                    clearInterval(RemainingTime);
-                    console.log('YOUR SCORE - ' + nScore);
-                    if (nScore == nTotalLevels) {
-                        console.log('YOU WIN!');
-                    } else {
-                        console.log('YOU LOOSE!');
+        fnInitiateKeyboardEvents = () => {
+            document.onkeyup = (e) => {
+                if (e.key === 'ArrowUp') {
+                    if (enemyID > 0) {
+                        document.getElementById('Player').remove();
+                        enemyID--;
+                        addPlayer(enemyID, ansID);
                     }
-                    saveData();
-                    return;
+                } else if (e.key === 'ArrowDown') {
+                    if (enemyID < 4) {
+                        document.getElementById('Player').remove();
+                        enemyID++;
+                        addPlayer(enemyID, ansID);
+                    }
+                } else if (e.key === ' ' && nCurrentLevel <= nTotalLevels) {
+                    let index = document.getElementById('Player').parentNode.id.split('enemy_')[1];
+                    let PlayerAns = document.getElementById('CorrectAns').innerText;
+                    
+                    if (parseInt(PlayerAns) === parseInt(arrCorrectAns[index])) {
+                        nScore++;
+                    } else {
+                        console.log('INCORRECT');
+                    }
+
+                    if (nCurrentLevel != nTotalLevels) {
+                        nCurrentLevel++;
+                    } else {
+                        document.onkeyup = null;
+                        clearInterval(EnemyTimer);
+                        clearInterval(RemainingTime);
+                        console.log('YOUR SCORE - ' + nScore);
+                        if (nScore == nTotalLevels) {
+                            console.log('YOU WIN!');
+                            showPrompt('YOU WIN!');
+                        } else {
+                            showPrompt('YOU LOOSE!');
+                            console.log('YOU LOOSE!');
+                        }
+                        saveData();
+                        return;
+                    }
+    
+                    arrCorrectAns = [];
+                    arrEnemiesID = [];
+                    clearInterval(EnemyTimer);
+    
+                    generateEnemies();
+                    enemyID = Math.floor(Math.random() * arrEnemiesID.length);
+                    ansID = Math.floor(Math.random() * arrCorrectAns.length);
+                    addPlayer(enemyID, ansID);
+                    initiateCharge();
+                } else {
+                    console.log('ALL DONE!');
                 }
-
-                arrCorrectAns = [];
-                arrEnemiesID = [];
-                clearInterval(EnemyTimer);
-
-                generateEnemies();
-                enemyID = Math.floor(Math.random() * arrEnemiesID.length);
-                ansID = Math.floor(Math.random() * arrCorrectAns.length);
-                addPlayer(enemyID, ansID);
-                initiateCharge();
-            } else {
-                console.log('ALL DONE!')
             }
         }
 
         saveData = () => {
-            var objPlayer = { 'Name': PlayerName, 'Level': nCurrentLevel, 'Score': nScore };
-            localStorage.setItem('Multiplication Scoot - ' + PlayerName, JSON.stringify(objPlayer));
-        }
-        getPlayerName();
-        generateEnemies();
-        enemyID = Math.floor(Math.random() * arrEnemiesID.length);
-        ansID = Math.floor(Math.random() * arrCorrectAns.length);
-        addPlayer(enemyID, ansID);
-        initiateCharge();
+            let objPlayer = { 'playerName': PlayerName, 'level': nCurrentLevel, 'score': nScore };
 
-        RemainingTime = setInterval(function(){
-            if(timeleft == 1){
-                clearInterval(RemainingTime);
+            if ("Multiplication_Scoot" in localStorage){
+                let playerList = JSON.parse(localStorage.getItem("Multiplication_Scoot"));
+                playerList.push(objPlayer);
+                localStorage.setItem('Multiplication_Scoot', JSON.stringify(playerList));
+            } else {
+                let playerList = [];
+                playerList.push(objPlayer);
+                localStorage.setItem('Multiplication_Scoot', JSON.stringify(playerList));
             }
-            document.getElementById("time").innerHTML = "Time remaining: " + (timeleft - 1);
-            timeleft -= 1;
-        }, 1000);
+        }
+
+        fnResetVals = () => {
+            nCurrentLevel = 1;
+            timeleft = 60;
+            arrCorrectAns = [];
+            arrEnemiesID = [];
+            enemyID = '';
+            ansID = '';
+            nScore = 0;
+            PlayerName = '';
+            clearInterval(EnemyTimer);
+            clearInterval(RemainingTime);
+        }
+
+        fnPlayAgain = () => {
+            hidePrompt();
+            fnResetVals();
+            getPlayerName();
+            generateEnemies();
+            enemyID = Math.floor(Math.random() * arrEnemiesID.length);
+            ansID = Math.floor(Math.random() * arrCorrectAns.length);
+            addPlayer(enemyID, ansID);
+            initiateCharge();
+            fnInitiateKeyboardEvents();
+
+            RemainingTime = setInterval(function(){
+                if(timeleft == 1){
+                    clearInterval(RemainingTime);
+                }
+                document.getElementById("time").innerHTML = "Time remaining: " + (timeleft - 1);
+                timeleft -= 1;
+            }, 1000);
+        }
+
+        fnHighScore = () => {
+            window.location.href = "scores.html";
+        }
+        
+        fnPlayAgain();
     }
 }
