@@ -7,20 +7,95 @@ html {
     background-size: cover;
   }
   
-  h2{
+  h2,th{
     text-align: center;
-   font-style: italic;
+  
    text-shadow: azure 2px 2px;
    font-size: 40px;
     color: rgba(240, 255, 255, 0.856);
+    font-family: 'Rock Salt', cursive;
+   
   }
 
-  .player{
-    font-size: 25px; 
-    margin-bottom: 10px;
-    color: rgba(240, 255, 255, 0.856);
+  
+
+  span,.playerNum{
+    color:#4ed677;
+    font-family: 'Jura', sans-serif;
+  
   }
 
-  span{
-    color:#e21b1b;
+  .table{
+  
+    border: azure solid 5px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+   
+  }
+  td{
+    text-align: center;
+    font-family: 'Jura', sans-serif;
+    border: 1px solid azure;
+    width:.33fr;
+    
+  }
+
+  .th{
+    
+    font-size: 25px;
+    background-color: chartreuse;
+    font-family: 'Jura', sans-serif;
+    text-align: center;
+
+  }
+  
+
+  tr{
+    height: 40px;
+    font-size: 22px;
+    font-family: 'Jura', sans-serif;
+  
+   
+  }
+
+  .row{
+    
+    font-family: 'Jura', sans-serif;
+    height: 40px;
+    text-align: center;
+    border: white solid 2px;
+    color: white;
+   font-size: 22px;
+  }
+
+   .container{
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+  } 
+
+  
+  #backToMainScreen{
+    background-color: green;
+    color: white;
+    height: 40px;
+    margin-top: 30px;
+    position: relative;
+    
+    left: 50%;
+    
+    transform: translate(-50%, -50%);
+ 
+    font-size: 20px;
+
+  }
+
+  #audioImage{
+    position: absolute;
+    top: 10%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+    height: 10%;
+    width: 10%;
   }

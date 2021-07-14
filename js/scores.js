@@ -1,31 +1,26 @@
-let playerNumberOld=0;
+
+
 let playerList=[];
+let playerNumberOld=0;
+let newPlayerNums=0;
+let newPlayers=[];
+let audioOn=true;
 
 const printHighScores = () =>{
     //print
     for(let i=0;i<playerList.length;i++){
-       document.querySelector("#score_"+`${i+1}`).innerText=playerList[i].playerName+", level:"+playerList[i].level;
+       document.querySelector("#score_"+`${i+1}`).innerText=playerList[i].playerName;
+       document.querySelector("#level_"+`${i+1}`).innerText=playerList[i].level;
    }
 }
 
-const sort = (playerList) => {
-    for(let i=0;i<playerList.length-1;i++){
-        for(let j=0;j<playerList.length-i-2;j++){
-            if(playerList[j].level<playerList[j+1].level){
-               // swap
-               let temp=playerList[j];
-               playerList[j]=playerList[j+1];
-               playerList[j+1]=temp;
-            }
-        }
 
-    }
-    return playerList;
-}
 
 const saveToStorage = () =>{
-    playerList.pop();
+   // playerList.pop();
   //remove least level players
+  console.log("savetostorage playerlist start");
+  console.log(playerList);
   while(playerList.length > 5){
     playerList.pop();
     }
@@ -34,52 +29,111 @@ const saveToStorage = () =>{
     localStorage.setItem("playersPrev",`${playerList.length}`);
 }
 
-const findIfPlayerPresent = () =>{
-    let newName=playerList[playerList.length-1].playerName;
-    let ifPlayerAvail=false;
-    for(let i=0;i<playerList.length-1;i++){
-            if(newName === playerList[i].playerName){
-                playerList[i]=playerList[playerList.length-1];
-                ifPlayerAvail=true;
-                break;
-            }
-    }
-    return ifPlayerAvail;
-}
 
-const addNewPlayerInOrder = () =>{
- //add the last item added in btw
- let newPlayer=playerList[playerList.length-1];
- for(let i=0;i<playerList.length-1;i++){
-       if(newPlayer.level >= playerList[i].level){
-           playerList.splice(i,0,newPlayer);
-           //stop
-           break;
-       }
- } 
-}
-
- export const saveHighScores = () => {
+const saveHighScores = () =>{
     if("Multiplication_Scoot" in localStorage){
-        playerList = JSON.parse(localStorage.getItem("Multiplication_Scoot"));
+        playerList=JSON.parse(localStorage.getItem("Multiplication_Scoot"));
+        // console.log(playerList);
+
         if("playersPrev" in localStorage){
             playerNumberOld=parseInt(localStorage.getItem("playersPrev"));
         }
-    if(playerList.length !== playerNumberOld){
-        let ifPlayerAvail=findIfPlayerPresent();
-        playerList=sort(playerList);
-        if(!ifPlayerAvail){
-          addNewPlayerInOrder(); 
-        }
+
+        if(playerList.length !== playerNumberOld){
+            newPlayerNums = playerList.length-playerNumberOld;
+            
+            
+            
+            let currentNewAdded=false;//currentnew
+            for(let i=0;i<newPlayerNums;i++){
+                
+            
+                newPlayers.push(playerList.pop());
+
+             
+
+            }
+         
+           if(playerList.length === 0){
+               for(let j=0;j<newPlayers.length;j++){
+                     playerList.splice(0,0,newPlayers[j]);
+               }
+           
+            console.log("playerlist === 0 executed");
+           }else{
+            for(let j=0;j<newPlayers.length;j++){
+           
+                for(let i=0;i<playerList.length;i++){
+                    console.log("loop === 0 executed");
+                     if(currentNewAdded){
+                     continue;
+                    }
+                    if(newPlayers[j].level >= playerList[i].level){
+                        playerList.splice(i,0,newPlayers[j]);
+                         //stop
+                        currentNewAdded=true;
+                
+                     }
+                } 
+                if(!currentNewAdded){
+                    playerList.push(newPlayers[j]);
+                }
+                currentNewAdded=false;
+            }
+           }
        
+
+        console.log("playerlist after splice");
+        console.log(playerList);
+
+        //sort
+
+
         saveToStorage();
-}
-       
+
+        }//
+      
 
 
-}else{
-    console.log("no player played the game");
+    }else{
+        console.log("no one played");
+    }
 }
-}
+const audioImageTapped = () =>{
+    if(document.querySelector("#audioImage").classList.contains("paused")){
+        document.querySelector("#audioImage").classList.remove("paused");
+        localStorage.setItem("audioPlaying","true");
+        document.querySelector("#audio").play();
+        document.querySelector("#audioImage").src="assets/audioImage.png";
 
-window.onload=printHighScores();
+    }else{
+        
+        document.querySelector("#audioImage").classList.add("paused");
+        localStorage.setItem("audioPlaying","false");
+        document.querySelector("#audio").pause();
+        document.querySelector("#audioImage").src="assets/audioOff.png";
+
+    }
+
+}
+const goToMainScreen = () => {
+    window.location.href = "index.html" 
+}
+const audioPlay = () => {
+    if("audioPlaying" in localStorage){
+        audioOn=localStorage.getItem("audioPlaying");
+        if(audioOn === "true"){
+            document.querySelector("#audio").play();
+        }else{
+            document.querySelector("#audio").pause();
+        }
+    }else{
+        document.querySelector("#audio").play();
+    }
+}
+window.onload=audioPlay();
+saveHighScores();
+document.querySelector("#audioImage").addEventListener("click",audioImageTapped);
+printHighScores();
+
+document.querySelector("#backToMainScreen").addEventListener("click",goToMainScreen);

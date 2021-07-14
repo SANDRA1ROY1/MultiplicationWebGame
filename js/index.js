@@ -1,20 +1,22 @@
 
 document.onreadystatechange = () => {
-    document.querySelector("#audio").play();
+   
     if (document.readyState == 'complete') {
-
+        localStorage.setItem("audioPlaying","true");
 
         
        
         const audioImageTapped = () =>{
             if(document.querySelector("#audioImage").classList.contains("paused")){
                 document.querySelector("#audioImage").classList.remove("paused");
+                localStorage.setItem("audioPlaying","true");
                 document.querySelector("#audio").play();
                 document.querySelector("#audioImage").src="assets/audioImage.png";
         
             }else{
                 
                 document.querySelector("#audioImage").classList.add("paused");
+                localStorage.setItem("audioPlaying","false");
                 document.querySelector("#audio").pause();
                 document.querySelector("#audioImage").src="assets/audioOff.png";
         
@@ -23,7 +25,7 @@ document.onreadystatechange = () => {
         }
         document.querySelector("#audioImage").addEventListener("click",audioImageTapped);
 
-        startGame = () => {
+      const startGame = () => {
             if(document.querySelector("#player").value === ""){
                 alert("Please enter your name");
             }else{
@@ -32,5 +34,7 @@ document.onreadystatechange = () => {
             }
             
         }
+        
+        document.querySelector("#start").addEventListener("click",startGame);
     }
 }
