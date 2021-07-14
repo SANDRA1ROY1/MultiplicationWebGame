@@ -30,6 +30,11 @@ html {
     padding-bottom: 10px;
 }
 
+.padLeft {
+    padding-left: 50px;
+    cursor: pointer;
+}
+
 .text {
     color: #fff;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
