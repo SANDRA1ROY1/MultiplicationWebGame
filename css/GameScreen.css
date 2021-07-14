@@ -1,0 +1,129 @@
+html {
+    background: url(../assets/bg_single_1536x3840.png) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.wrap {
+    width:100%;
+    height:100%
+}
+.wrap div {
+    width:100%;
+    height:15%
+}
+
+.box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.box .row.content {
+    flex: auto;
+    float: left;
+}
+
+.padBottom {
+    padding-bottom: 10px;
+}
+
+.text {
+    color: #fff;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.level {
+    color: #fff;
+    font-size: 22px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    float: left;
+}
+
+.time {
+    color: #fff;
+    font-size: 22px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    float: right;
+}
+
+.floatLeft {
+    float: left;
+}
+
+.floatRight {
+    right:0;
+    float: right;
+    position: absolute;
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 50px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+
+button:hover {
+    opacity:1;
+  }
+  
+  /* Float cancel and delete buttons and add an equal width */
+  .cancelbtn, .deletebtn {
+    float: left;
+    width: 5%;
+    height: 5%;
+  }
+  
+  /* Add a color to the cancel button */
+  .cancelbtn {
+    background-color: #fff;
+    font-size: 22px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    cursor: pointer;
+  }
+  
+  /* Add a color to the delete button */
+  .deletebtn {
+    background-color: #fff;
+    font-size: 22px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    cursor: pointer;
+  }
+  
+  /* Add padding and center-align text to the container */
+  .container {
+    padding: 16px;
+    text-align: center;
+    position:absolute;
+    top: 53%;
+    left: 41%;
+    width: 110%;
+    height: 100%;
+  }
+
+  .btns {
+    width: 150%;
+    height: 100%;
+  }
