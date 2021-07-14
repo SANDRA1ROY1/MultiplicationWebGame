@@ -209,7 +209,7 @@ document.onreadystatechange = () => {
             clearInterval(RemainingTime);
         }
 
-        fnPlayAgain = () => {
+        fnPlay = () => {
             hidePrompt();
             fnResetVals();
             generateEnemies();
@@ -232,7 +232,7 @@ document.onreadystatechange = () => {
             window.location.href = "scores.html";
         }
         
-        fnPlayAgain();
+        fnPlay();
         getPlayerName();
     }
 }
