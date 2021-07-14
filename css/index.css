@@ -1,0 +1,84 @@
+
+
+  html { 
+    background: url(../assets/bg_single_1536x3840.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+  h2{
+    text-align: center;
+   font-style: italic;
+   text-shadow: azure 2px 2px;
+   font-size: 40px;
+    color: rgba(240, 255, 255, 0.856);
+    font-family: 'Rock Salt', cursive;
+  }
+
+  .centered{
+    position: absolute;
+    
+    left: 50%;
+    transform: translate(-50%, -50%);
+ 
+    font-size: 25px;
+   
+    
+  }
+
+  .center{
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .button{
+    font-family: 'Jura', sans-serif;
+    height: 50px;
+    width:200px;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    color: black;
+    font-weight: bolder;
+    
+  }
+  #player{
+    top:39%;
+    text-align: center;
+    border-radius: 10px;
+    width:250px;
+    padding: 5px;
+    margin-bottom: 10px;
+    font-weight: 300;
+    font-family: 'Jura', sans-serif;
+  }
+
+  #rules{
+    top: 50%;
+    
+   
+  }
+
+
+  #results{
+    top: 72%;
+   
+  }
+  #start{
+    top: 61%;
+  
+  }
+
+
+  #audioImage{
+    position: absolute;
+    top: 10%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+    height: 10%;
+    width: 10%;
+  }

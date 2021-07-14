@@ -1,0 +1,92 @@
+
+html { 
+    background: url(../assets/bg_single_1536x3840.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  
+  h2,th{
+    text-align: center;
+  
+   text-shadow: azure 2px 2px;
+   font-size: 40px;
+    color: rgba(240, 255, 255, 0.856);
+    font-family: 'Rock Salt', cursive;
+   
+  }
+
+  
+
+  span,.playerNum{
+    color:#4ed677;
+    font-family: 'Jura', sans-serif;
+  
+  }
+
+  .table{
+  
+    border: azure solid 5px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+   
+  }
+  td{
+    text-align: center;
+    font-family: 'Jura', sans-serif;
+    border: 1px solid azure;
+    width:.33fr;
+    
+  }
+
+  .th{
+    
+    font-size: 25px;
+    background-color: chartreuse;
+    font-family: 'Jura', sans-serif;
+    text-align: center;
+
+  }
+  
+
+  tr{
+    height: 40px;
+    font-size: 22px;
+    font-family: 'Jura', sans-serif;
+  
+   
+  }
+
+  .row{
+    
+    font-family: 'Jura', sans-serif;
+    height: 40px;
+    text-align: center;
+    border: white solid 2px;
+    color: white;
+   font-size: 22px;
+  }
+
+   .container{
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+  } 
+
+  
+  #backToMainScreen{
+    background-color: green;
+    color: white;
+    height: 40px;
+    margin-top: 30px;
+    position: relative;
+    
+    left: 50%;
+    
+    transform: translate(-50%, -50%);
+ 
+    font-size: 20px;
+
+  }
