@@ -1,6 +1,5 @@
 document.onreadystatechange = () => {
     if (document.readyState == "complete") {
-
         let nTotalEnemies = 5;
         let imgHgt = '120px';
         let imgWdt = '120px';
@@ -17,6 +16,22 @@ document.onreadystatechange = () => {
         let nLimit = window.innerWidth - 256;
         let nScore = 0;
         let PlayerName = '';
+        let music = 'On';
+        let audio = new Audio('assets/Summertime-Fun.mp3');
+        let audioText = 'Sound Off';
+
+        fnAudio = () => {
+            if (music === 'On') {
+                music = 'Off';
+                audio.play();
+                document.getElementById('music').src = 'assets/audioOn.png'
+            } else if (music === 'Off') {
+                music = 'On';
+                audio.pause();
+                audio.currentTime = 0;
+                document.getElementById('music').src = 'assets/audioOff.png';
+            }
+        }
 
         showPrompt = (txt) => {
             document.getElementById("overlay").style.display = "block";
@@ -53,6 +68,7 @@ document.onreadystatechange = () => {
             }
             enemy += '<div class="padBottom">' +
                         '<div class="level">Level ' + nCurrentLevel + ' of ' + nTotalLevels + '</div>' +
+                        '<span class="padLeft"><img id="music" src="assets/audioOff.png" onclick=fnAudio(); /></span>' +
                         '<div class="time" id="time">Time remaining: ' + timeleft + '</div>' +
                     '</div>';
             
