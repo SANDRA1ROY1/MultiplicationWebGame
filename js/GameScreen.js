@@ -29,7 +29,7 @@ document.onreadystatechange = () => {
                 music = 'On';
                 audio.pause();
                 audio.currentTime = 0;
-                document.getElementById('music').src = 'assets/audioOff.png';
+                document.getElementById('music').src = 'assets/soundOff.png';
             }
         }
 
@@ -68,7 +68,7 @@ document.onreadystatechange = () => {
             }
             enemy += '<div class="padBottom">' +
                         '<div class="level">Level ' + nCurrentLevel + ' of ' + nTotalLevels + '</div>' +
-                        '<span class="padLeft"><img id="music" src="assets/audioOff.png" onclick=fnAudio(); /></span>' +
+                        '<span class="padLeft"><img id="music" src="assets/soundOff.png" onclick=fnAudio(); /></span>' +
                         '<div class="time" id="time">Time remaining: ' + timeleft + '</div>' +
                     '</div>';
             
