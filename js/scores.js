@@ -55,7 +55,10 @@ const saveHighScores = () =>{
             }
          
            if(playerList.length === 0){
-            playerList.splice(0,0,newPlayers[j]);
+               for(let j=0;j<newPlayers.length;j++){
+                     playerList.splice(0,0,newPlayers[j]);
+               }
+           
             console.log("playerlist === 0 executed");
            }else{
             for(let j=0;j<newPlayers.length;j++){
