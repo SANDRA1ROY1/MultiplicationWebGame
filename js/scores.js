@@ -4,6 +4,7 @@ let playerList=[];
 let playerNumberOld=0;
 let newPlayerNums=0;
 let newPlayers=[];
+let audioOn=true;
 
 const printHighScores = () =>{
     //print
@@ -95,9 +96,41 @@ const saveHighScores = () =>{
         console.log("no one played");
     }
 }
-window.onload=saveHighScores();
-printHighScores();
+const audioImageTapped = () =>{
+    if(document.querySelector("#audioImage").classList.contains("paused")){
+        document.querySelector("#audioImage").classList.remove("paused");
+        localStorage.setItem("audioPlaying","true");
+        document.querySelector("#audio").play();
+        document.querySelector("#audioImage").src="assets/audioImage.png";
+
+    }else{
+        
+        document.querySelector("#audioImage").classList.add("paused");
+        localStorage.setItem("audioPlaying","false");
+        document.querySelector("#audio").pause();
+        document.querySelector("#audioImage").src="assets/audioOff.png";
+
+    }
+
+}
 const goToMainScreen = () => {
     window.location.href = "index.html" 
 }
+const audioPlay = () => {
+    if("audioPlaying" in localStorage){
+        audioOn=localStorage.getItem("audioPlaying");
+        if(audioOn === "true"){
+            document.querySelector("#audio").play();
+        }else{
+            document.querySelector("#audio").pause();
+        }
+    }else{
+        document.querySelector("#audio").play();
+    }
+}
+window.onload=audioPlay();
+saveHighScores();
+document.querySelector("#audioImage").addEventListener("click",audioImageTapped);
+printHighScores();
+
 document.querySelector("#backToMainScreen").addEventListener("click",goToMainScreen);
